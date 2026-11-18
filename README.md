@@ -1,43 +1,54 @@
-# Home Lab – Penetration Testing (Kali Linux & Metasploitable2)
+# Home Lab Penetration Testing
 
-## Overview
-A self-hosted penetration testing lab built to practice offensive security fundamentals in a safe, isolated environment.
+A self-hosted penetration-testing lab built with Kali Linux and Metasploitable2 to practice reconnaissance, service enumeration, vulnerability validation, and responsible security reporting in an isolated environment.
 
-## Tools Used
-- Kali Linux (attacker machine)
-- Metasploitable2 (intentionally vulnerable target)
-- VMware Workstation
-- Nmap (network scanning)
-- Netcat (manual exploitation)
-- Metasploit Framework (framework-based exploitation)
+> **Educational use only:** Perform security testing only on systems you own or have explicit permission to assess.
 
-## Setup
-- Both VMs configured on an isolated Host-only virtual network
-- No internet exposure to the vulnerable target machine
+## Lab environment
+
+- Kali Linux — assessment workstation
+- Metasploitable2 — intentionally vulnerable target
+- VMware Workstation — virtualization
+- Host-only networking — prevents the vulnerable target from being exposed to the internet
+
+## Tools
+
+- Nmap for host and service discovery
+- Netcat for manual service validation
+- Metasploit Framework for controlled exploit verification
 
 ## Methodology
 
-1. **Reconnaissance:** Performed a service/version scan using Nmap
-   `nmap -sV -Pn <target-ip>`
-   → Identified multiple open ports and outdated services (FTP, Telnet, misconfigured shell services)
+1. Confirm that the lab is isolated and identify the target address.
+2. Perform service and version discovery with Nmap.
+3. Research findings and validate vulnerabilities only inside the lab.
+4. Record evidence, impact, and remediation recommendations.
+5. Remove test artifacts and document lessons learned.
 
-2. **Exploitation #1 – Manual:** Identified an exposed root shell service on port 1524 (bindshell)
-   Connected using Netcat and obtained root access on the target machine without authentication
+## Findings documented in this lab
 
-3. **Exploitation #2 – Framework-based:** Identified vsftpd 2.3.4 (port 21), a version with a known backdoor vulnerability (CVE-2011-2523)
-   Used Metasploit Framework (`exploit/unix/ftp/vsftpd_234_backdoor`) to gain a Meterpreter session with root privileges
+- An outdated `vsftpd 2.3.4` service associated with CVE-2011-2523.
+- An unencrypted Telnet service.
+- A misconfigured bind shell on port `1524` that permits unauthenticated root access.
+- A comparison between manual validation and framework-assisted testing.
 
-## Key Findings
-- Outdated FTP service (vsftpd 2.3.4) with known backdoor vulnerability
-- Unencrypted Telnet service exposed
-- Misconfigured backdoor shell (port 1524) granting unauthenticated root access
-- Demonstrated both manual exploitation (Netcat) and framework-based exploitation (Metasploit Framework)
+The screenshots in this repository are demonstrations from the isolated lab and should not be interpreted as authorization to test third-party systems.
 
-## Lessons Learned
-- Importance of patching outdated services
-- Risks of exposing unauthenticated administrative shells
-- Practical application of reconnaissance-to-exploitation methodology
-- Comparison between manual exploitation techniques and automated framework tools
+## Repository contents
+
+- `README.md` — lab scope, methodology, and findings
+- `nmap-scan-result.png` — example enumeration evidence
+- `meterpreter-root-session.png` — example framework-session evidence
+- `root-shell-exploit.png` — example manual-validation evidence
+
+## Key lessons
+
+- Patch or remove outdated services.
+- Never expose administrative shells without strong authentication.
+- Avoid Telnet where encrypted alternatives are available.
+- Keep vulnerable practice targets isolated from production and the public internet.
+- A professional report should connect each finding to evidence, risk, and remediation.
 
 ## Disclaimer
-This lab was conducted entirely within an isolated virtual environment for educational purposes only.
+
+This project was completed in an isolated virtual environment for educational purposes. The author does not endorse unauthorized access, exploitation, or disruption of systems.
