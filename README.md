@@ -6,16 +6,18 @@ A self-hosted penetration-testing lab built with Kali Linux and Metasploitable2 
 
 ## Lab environment
 
-- Kali Linux — assessment workstation
-- Metasploitable2 — intentionally vulnerable target
-- VMware Workstation — virtualization
-- Host-only networking — prevents the vulnerable target from being exposed to the internet
+| Component | Role |
+|---|---|
+| Kali Linux | Assessment workstation |
+| Metasploitable2 | Intentionally vulnerable target |
+| VMware Workstation | Virtualization |
+| Host-only network | Keeps the vulnerable target off the internet |
 
 ## Tools
 
-- Nmap for host and service discovery
-- Netcat for manual service validation
-- Metasploit Framework for controlled exploit verification
+- **Nmap** for host and service discovery
+- **Netcat** for manual service validation
+- **Metasploit Framework** for controlled exploit verification
 
 ## Methodology
 
@@ -25,21 +27,31 @@ A self-hosted penetration-testing lab built with Kali Linux and Metasploitable2 
 4. Record evidence, impact, and remediation recommendations.
 5. Remove test artifacts and document lessons learned.
 
-## Findings documented in this lab
+## Findings summary
 
-- An outdated `vsftpd 2.3.4` service associated with CVE-2011-2523.
-- An unencrypted Telnet service.
-- A misconfigured bind shell on port `1524` that permits unauthenticated root access.
-- A comparison between manual validation and framework-assisted testing.
+| # | Finding | Severity | Evidence | Remediation |
+|---|---|---|---|---|
+| 1 | Outdated `vsftpd 2.3.4` service (CVE-2011-2523) | Critical | Nmap service detection; framework-assisted validation | Remove or upgrade to a supported version; restrict FTP exposure |
+| 2 | Unencrypted Telnet service | Medium | Nmap service detection | Disable Telnet and use SSH |
+| 3 | Bind shell on port `1524` allowing unauthenticated root access | Critical | Manual validation with Netcat | Close the port; investigate how the service was started; never expose administrative shells without authentication |
 
-The screenshots in this repository are demonstrations from the isolated lab and should not be interpreted as authorization to test third-party systems.
+Severity ratings are my own assessment for this lab and are not an official CVSS scoring.
 
-## Repository contents
+## Evidence
 
-- `README.md` — lab scope, methodology, and findings
-- `nmap-scan-result.png` — example enumeration evidence
-- `meterpreter-root-session.png` — example framework-session evidence
-- `root-shell-exploit.png` — example manual-validation evidence
+### Service enumeration
+
+![Nmap scan results showing open services on the target](nmap-scan-result.png)
+
+### Manual validation
+
+![Manual validation of the bind shell finding](root-shell-exploit.png)
+
+### Framework-assisted validation
+
+![Metasploit Meterpreter session from the lab](meterpreter-root-session.png)
+
+The screenshots are demonstrations from the isolated lab and are not authorization to test third-party systems.
 
 ## Key lessons
 
@@ -47,7 +59,14 @@ The screenshots in this repository are demonstrations from the isolated lab and 
 - Never expose administrative shells without strong authentication.
 - Avoid Telnet where encrypted alternatives are available.
 - Keep vulnerable practice targets isolated from production and the public internet.
-- A professional report should connect each finding to evidence, risk, and remediation.
+- A professional report connects each finding to evidence, risk, and remediation.
+- Manual validation shows exactly what a service does; framework-assisted testing is faster. Both are useful.
+
+## Repository contents
+
+- `README.md` — lab scope, methodology, and findings
+- `SECURITY.md` — responsible-use policy
+- `nmap-scan-result.png`, `root-shell-exploit.png`, `meterpreter-root-session.png` — lab evidence
 
 ## Disclaimer
 
